@@ -1,0 +1,6 @@
+2023-03-09T10:30:57.461138 404 : [{"timestamp":"2023-03-09T15:30:57.443+00:00","status":404,"error":"Not Found","message":"No message available","path":"/tenmo/register"}]
+2023-03-09T13:26:27.2930616 I/O error on POST request for "http://localhost:5432/tenmoregister": Connection reset; nested exception is java.net.SocketException: Connection reset
+2023-03-09T13:27:35.0533303 I/O error on POST request for "http://localhost:5432/tenmo/register": Connection reset; nested exception is java.net.SocketException: Connection reset
+2023-03-09T13:31:38.1016902 I/O error on POST request for "http://localhost:5432/tenmo/register": Connection reset; nested exception is java.net.SocketException: Connection reset
+2023-03-09T16:57:34.7967652 500 : [{"timestamp":"2023-03-09T21:57:34.779+00:00","status":500,"error":"Internal Server Error","message":"No message available","path":"/register"}]
+2023-03-09T20:03:16.7270871 500 : [{"timestamp":"2023-03-10T01:03:16.686+00:00","status":500,"error":"Internal Server Error","message":"No message available","path":"/register"}]
