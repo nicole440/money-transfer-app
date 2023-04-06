@@ -20,7 +20,7 @@ import java.util.List;
  */
 @RestController
 @PreAuthorize("isAuthenticated()")
-@RequestMapping("users")
+@RequestMapping("/users")
 public class UserController {
 
     @Autowired
@@ -56,12 +56,4 @@ public class UserController {
             returnedUser = userDao.findByUsername(user_like);
         } return returnedUser;
     }
-
-//    @RequestMapping(method = RequestMethod.GET)
-//    public int getUserIdByUserName(@RequestParam(defaultValue = "") String user_like) {
-//        int retrievedUserId = 0;
-//        if (!user_like.equals("")) {
-//            retrievedUserId = userDao.findIdByUsername(user_like);
-//        } return retrievedUserId;
-//    }
 }

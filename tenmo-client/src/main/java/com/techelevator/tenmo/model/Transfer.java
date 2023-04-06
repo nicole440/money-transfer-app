@@ -6,9 +6,15 @@ public class Transfer {
     private int transferId;
     private int transferTypeId;
     private int transferStatusId;
-    private int accountFrom;
-    private int accountTo;
-    private BigDecimal amount = new BigDecimal(0.00);
+    private int userFrom;
+    private int userTo;
+    private BigDecimal amount;
+
+    public Transfer() {
+    }
+
+    public Transfer(int recipient, BigDecimal transferAmount) {
+    }
 
     public int getTransferId() {
         return transferId;
@@ -34,20 +40,20 @@ public class Transfer {
         this.transferStatusId = transferStatusId;
     }
 
-    public int getAccountFrom() {
-        return accountFrom;
+    public int getUserFrom() {
+        return userFrom;
     }
 
-    public void setAccountFrom(int accountFrom) {
-        this.accountFrom = accountFrom;
+    public void setUserFrom(int userFrom) {
+        this.userFrom = userFrom;
     }
 
-    public int getAccountTo() {
-        return accountTo;
+    public int getUserTo() {
+        return userTo;
     }
 
-    public void setAccountTo(int accountTo) {
-        this.accountTo = accountTo;
+    public void setUserTo(int userTo) {
+        this.userTo = userTo;
     }
 
     public BigDecimal getAmount() {

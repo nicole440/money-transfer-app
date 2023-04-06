@@ -1,7 +1,7 @@
 package com.techelevator.tenmo.exceptions;
 
 public class InsufficientFundsException extends Exception{
-    public InsufficientFundsException(String message) {
+    public InsufficientFundsException() {
         super("Insufficient funds.");
     }
 }

@@ -20,5 +20,9 @@
     <orderEntry type="library" name="Maven: com.fasterxml.jackson.core:jackson-annotations:2.10.3" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.springframework:spring-test:5.2.6.RELEASE" level="project" />
     <orderEntry type="library" name="Maven: org.bouncycastle:bcprov-jdk16:1.46" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: org.testng:testng:7.7.1" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: org.slf4j:slf4j-api:1.7.36" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: com.beust:jcommander:1.82" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: org.webjars:jquery:3.6.1" level="project" />
   </component>
 </module>

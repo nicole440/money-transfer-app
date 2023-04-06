@@ -1,24 +1,22 @@
 package com.techelevator.tenmo.dao;
 
 import com.techelevator.tenmo.model.Transfer;
-import com.techelevator.tenmo.model.User;
-import org.springframework.security.core.Authentication;
-
 import java.math.BigDecimal;
-import java.security.Principal;
 import java.util.List;
 
 public interface TransferDao {
 
-    public List<Transfer> listTransfersByUser(String user);
+    List<Transfer> listTransfersByUser(int userId);
 
-    public String getTransferDetails(int transferId);
+    String getTransferDetails(int transferId);
 
-    public boolean sendMoney(Transfer transfer);
+    boolean initiateTransfer(int senderId, int recipientId, BigDecimal amount);
 
-    public int getMaxId();
+    int getUserId(String userName);
 
-    public int getMaxIdPlusOne();
+    int getMaxId();
+
+    int getMaxIdPlusOne();
 
     // Request money (optional)
 

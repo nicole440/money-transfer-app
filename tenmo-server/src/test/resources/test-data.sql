@@ -87,27 +87,6 @@ INSERT INTO account (user_id, balance) VALUES (1004, 3000) RETURNING account_id;
 INSERT INTO account (user_id, balance) VALUES (1005, 3000) RETURNING account_id;
 INSERT INTO account (user_id, balance) VALUES (1006, 3000) RETURNING account_id;
 
--- Failed transfer to self
-Start Transaction;
-UPDATE account SET balance = (balance - 1000) WHERE account_id = 2003;
-UPDATE account SET balance = (balance + 1000) WHERE account_id = 2003;
-INSERT INTO transfer (transfer_type_id, transfer_status_id, account_from, account_to, amount) VALUES (2, 2, 2003, 2003, 1000);
-COMMIT;
-
--- Failed transfer with zero balance in sending account
-Start Transaction;
-UPDATE account SET balance = (balance - 1000) WHERE account_id = 2002;
-UPDATE account SET balance = (balance + 1000) WHERE account_id = 2004;
-INSERT INTO transfer (transfer_type_id, transfer_status_id, account_from, account_to, amount) VALUES (2, 2, 2002, 2004, 1000);
-COMMIT;
-
--- Failed transfer with negative balance in sending account
-Start Transaction;
-UPDATE account SET balance = (balance - 1000) WHERE account_id = 2001;
-UPDATE account SET balance = (balance + 1000) WHERE account_id = 2002;
-INSERT INTO transfer (transfer_type_id, transfer_status_id, account_from, account_to, amount) VALUES (2, 2, 2001, 2002, 1000);
-COMMIT;
-
 -- Successful transfer
 Start Transaction;
 UPDATE account SET balance = (balance - 1000) WHERE account_id = 2003;
@@ -137,4 +116,4 @@ WHERE username = 'user1';
 SELECT transfer_type_id, transfer_status_id, account_from, account_to, amount
 FROM transfer WHERE transfer_id = 3001;
 
-ROLLBACK
+ROLLBACK;

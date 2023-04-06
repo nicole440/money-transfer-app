@@ -9,7 +9,7 @@ import org.springframework.web.client.RestTemplate;
 
 public class TransferService {
 
-    public static final String API_BASE_URL = "http://localhost:8080/";
+    public static final String API_BASE_URL = "http://localhost:8080";
     RestTemplate restTemplate = new RestTemplate();
     private String authToken = null;
 
@@ -20,7 +20,7 @@ public class TransferService {
     public Transfer[] getAllTransfers() {
         Transfer[] transferArray = null;
         try {
-            transferArray = restTemplate.exchange(API_BASE_URL + "transfers/all", HttpMethod.GET, makeAuthEntity(), Transfer[].class).getBody();
+            transferArray = restTemplate.exchange(API_BASE_URL + "/transfers/all", HttpMethod.GET, makeAuthEntity(), Transfer[].class).getBody();
         } catch (RestClientResponseException | ResourceAccessException e) {
             BasicLogger.log(e.getMessage());
         }
@@ -30,7 +30,7 @@ public class TransferService {
     public Transfer getTransferDetailsByTransferId(int transferId) {
         Transfer transfer = null;
         try {
-            ResponseEntity<Transfer> response = restTemplate.exchange(API_BASE_URL + "transfers/", HttpMethod.GET, makeAuthEntity(), Transfer.class);
+            ResponseEntity<Transfer> response = restTemplate.exchange(API_BASE_URL + "/transfers", HttpMethod.GET, makeAuthEntity(), Transfer.class);
             transfer = response.getBody();
         } catch (RestClientResponseException | ResourceAccessException e) {
             BasicLogger.log(e.getMessage());
@@ -38,24 +38,26 @@ public class TransferService {
         return transfer;
     }
 
-    public Transfer createTransfer(Transfer transfer) {
+    public boolean sendMoney(Transfer transfer) {
+        boolean confirmation = false;
         HttpEntity<Transfer> entity = makeTransferEntity(transfer);
         try {
-            restTemplate.exchange(API_BASE_URL + "transfers/newtransfer/", HttpMethod.POST, entity, Transfer.class);
+            restTemplate.exchange(API_BASE_URL + "/transfers/new", HttpMethod.POST, entity, Transfer.class);
+            confirmation = true;
         } catch (RestClientResponseException | ResourceAccessException e) {
             BasicLogger.log(e.getMessage());
         }
-        return transfer;
+        return confirmation;
     }
 
-    public Integer transferId(int transferId) {
-        try {
-            restTemplate.exchange(API_BASE_URL + "transfers/{transferId}", HttpMethod.GET, makeAuthEntity(), Integer.class);
-        } catch (RestClientResponseException | ResourceAccessException e) {
-            BasicLogger.log(e.getMessage());
-        }
-        return transferId;
-    }
+//    public Integer getTransferId(int transferId) {
+//        try {
+//            restTemplate.exchange(API_BASE_URL + "/transfers/{transferId}", HttpMethod.GET, makeAuthEntity(), Integer.class);
+//        } catch (RestClientResponseException | ResourceAccessException e) {
+//            BasicLogger.log(e.getMessage());
+//        }
+//        return transferId;
+//    }
 
     private HttpEntity<Transfer> makeTransferEntity(Transfer transfer) {
         HttpHeaders headers = new HttpHeaders();

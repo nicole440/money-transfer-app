@@ -9,7 +9,7 @@ import org.springframework.web.client.RestTemplate;
 
 public class UserService {
 
-    public static final String API_BASE_URL = "http://localhost:8080/";
+    public static final String API_BASE_URL = "http://localhost:8080";
     RestTemplate restTemplate = new RestTemplate();
     private String authToken = null;
 
@@ -17,10 +17,11 @@ public class UserService {
         this.authToken = authToken;
     }
 
+    // this works
     public User[] getAuthenticatedUsersArray() {
         User[] authenticatedUsers = null;
         try {
-            ResponseEntity<User[]> response = restTemplate.exchange(API_BASE_URL + "users/all", HttpMethod.GET, makeAuthEntity(), User[].class);
+            ResponseEntity<User[]> response = restTemplate.exchange(API_BASE_URL + "/users/all", HttpMethod.GET, makeAuthEntity(), User[].class);
             authenticatedUsers = response.getBody();
         } catch (RestClientResponseException | ResourceAccessException e) {
             BasicLogger.log(e.getMessage());
@@ -31,7 +32,7 @@ public class UserService {
     public User getAuthenticatedUserById(int userId) {
         User user = null;
         try {
-            ResponseEntity<User> response = restTemplate.exchange(API_BASE_URL + "users/" + userId, HttpMethod.GET, makeAuthEntity(), User.class);
+            ResponseEntity<User> response = restTemplate.exchange(API_BASE_URL + "/users/" + userId, HttpMethod.GET, makeAuthEntity(), User.class);
             user = response.getBody();
         } catch (RestClientResponseException | ResourceAccessException e) {
             BasicLogger.log(e.getMessage());
@@ -42,7 +43,7 @@ public class UserService {
     public User getUserByUserName(String userName) {
         User user = null;
         try {
-            ResponseEntity<User> response = restTemplate.exchange(API_BASE_URL + "users/" + userName, HttpMethod.GET, makeAuthEntity(), User.class);
+            ResponseEntity<User> response = restTemplate.exchange(API_BASE_URL + "/users/" + userName, HttpMethod.GET, makeAuthEntity(), User.class);
             user = response.getBody();
         } catch (RestClientResponseException | ResourceAccessException e) {
             BasicLogger.log(e.getMessage());
@@ -53,7 +54,7 @@ public class UserService {
     public Integer getUserIdByUserName(String userName) {
         Integer userId = 0;
         try {
-            ResponseEntity<Integer> response = restTemplate.exchange(API_BASE_URL + "users/" + userName, HttpMethod.GET, makeAuthEntity(), Integer.class);
+            ResponseEntity<Integer> response = restTemplate.exchange(API_BASE_URL + "/users/" + userName, HttpMethod.GET, makeAuthEntity(), Integer.class);
             userId = response.getBody();
         } catch (RestClientResponseException | ResourceAccessException e) {
             BasicLogger.log(e.getMessage());

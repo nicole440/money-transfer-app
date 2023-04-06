@@ -8,20 +8,19 @@ public class Transfer {
     private int transferId;
     private int transferTypeId;
     private int transferStatusId;
-    private int accountFrom;
-    private int accountTo;
+    private int userFrom;
+    private int userTo;
     @DecimalMin("1.00")
-    private BigDecimal amount = new BigDecimal(0.00);
+    private BigDecimal amount;
 
-    public Transfer() {
-    }
+    public Transfer() {}
 
-    public Transfer(int transferId, int transferTypeId, int transferStatusId, int accountFrom, int accountTo, BigDecimal amount) {
+    public Transfer(int transferId, int transferTypeId, int transferStatusId, int userFrom, int userTo, BigDecimal amount) {
         this.transferId = transferId;
         this.transferTypeId = transferTypeId;
         this.transferStatusId = transferStatusId;
-        this.accountFrom = accountFrom;
-        this.accountTo = accountTo;
+        this.userFrom = userFrom;
+        this.userTo = userTo;
         this.amount = amount;
     }
 
@@ -49,20 +48,20 @@ public class Transfer {
         this.transferStatusId = transferStatusId;
     }
 
-    public int getAccountFrom() {
-        return accountFrom;
+    public int getUserFrom() {
+        return userFrom;
     }
 
-    public void setAccountFrom(int accountFrom) {
-        this.accountFrom = accountFrom;
+    public void setUserFrom(int userFrom) {
+        this.userFrom = userFrom;
     }
 
-    public int getAccountTo() {
-        return accountTo;
+    public int getUserTo() {
+        return userTo;
     }
 
-    public void setAccountTo(int accountTo) {
-        this.accountTo = accountTo;
+    public void setUserTo(int userTo) {
+        this.userTo = userTo;
     }
 
     public BigDecimal getAmount() {
@@ -77,8 +76,8 @@ public class Transfer {
     public String toString() {
         return "Transfer ID: " + getTransferId() +
                 " | Transfer Type ID: " + getTransferTypeId() +
-                " | Transfer From: " + getAccountFrom() +
-                " | Transfer To: " + getAccountTo() +
+                " | Transfer From User: " + getUserFrom() +
+                " | Transfer To User: " + getUserTo() +
                 " | Amount: " + getAmount() +
                 " | Transfer Status: " + getTransferStatusId();
 

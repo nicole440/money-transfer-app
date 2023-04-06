@@ -1,20 +1,15 @@
 package com.techelevator.tenmo.controller;
 
 import com.techelevator.tenmo.dao.AccountDao;
-import com.techelevator.tenmo.dao.JdbcTransferDao;
 import com.techelevator.tenmo.dao.TransferDao;
 import com.techelevator.tenmo.dao.UserDao;
-import com.techelevator.tenmo.model.Account;
 import com.techelevator.tenmo.model.Transfer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
-import javax.validation.Valid;
-import java.math.BigDecimal;
 import java.security.Principal;
 import java.util.List;
 
@@ -24,7 +19,7 @@ import java.util.List;
  */
 @RestController
 @PreAuthorize("isAuthenticated()")
-@RequestMapping("transfers")
+@RequestMapping("/transfers")
 public class TransferController {
 
     @Autowired
@@ -40,19 +35,23 @@ public class TransferController {
         this.accountDao = accountDao;
     }
 
-    @RequestMapping(path = "/transfers/{id}", method = RequestMethod.GET)
-    public List<Transfer> getTransfersByUserId(Principal principal) {
-        String user = principal.getName();
-        return transferDao.listTransfersByUser(user);
+    @RequestMapping(path = "/{id}", method = RequestMethod.GET)
+    public List<Transfer> getTransactionHistory(int userId) {
+        return transferDao.listTransfersByUser(userId);
     }
 
     @ResponseStatus(HttpStatus.CREATED)
-    @RequestMapping(path = "/newtransfer/", method = RequestMethod.POST)
-    public void createTransfer(Transfer transfer) {
-        transferDao.sendMoney(transfer);
+    @RequestMapping(path = "/new", method = RequestMethod.POST)
+    public boolean createTransfer(Transfer transfer, Principal principal) {
+        int userId = transferDao.getUserId(principal.getName());
+        boolean moneySent = transferDao.initiateTransfer(userId, transfer.getUserTo(), transfer.getAmount());
+        if (moneySent == false) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "asdfkjkl;");
+        }
+        return moneySent;
     }
 
-    @RequestMapping(path = "/{id}", method = RequestMethod.GET)
+    @RequestMapping(path = "/{id}/details", method = RequestMethod.GET)
     public String getTransferDetailsById(@PathVariable int transferId) {
         return transferDao.getTransferDetails(transferId);
     }
