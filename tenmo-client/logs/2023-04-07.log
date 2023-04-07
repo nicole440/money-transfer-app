@@ -1,0 +1,3 @@
+2023-04-07T16:05:15.7875771 500 : [{"timestamp":"2023-04-07T20:05:15.760+00:00","status":500,"error":"Internal Server Error","message":"Ambiguous handler methods mapped for '/transfers/all': {public int com.techelevator.tenmo.controller.TransferController.getTransferId(int), public java.util.List com.techelevator.tenmo.controller.TransferController.getTransactionHistory(int)}","path":"/transfers/all"}]
+2023-04-07T16:06:37.6808622 400 : [{"timestamp":"2023-04-07T20:06:37.659+00:00","status":400,"error":"Bad Request","message":"asdfkjkl;","path":"/transfers/new"}]
+2023-04-07T17:04:43.1281922 400 : [{"timestamp":"2023-04-07T21:04:08.321+00:00","status":400,"error":"Bad Request","message":"asdfkjkl;","path":"/transfers/new"}]

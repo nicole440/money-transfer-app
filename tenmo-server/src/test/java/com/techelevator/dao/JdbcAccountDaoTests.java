@@ -12,8 +12,8 @@ import static org.junit.Assert.assertEquals;
 
 public class JdbcAccountDaoTests extends BaseDaoTests {
 
-    private static final Account ACCOUNT_1 = new Account(2001, BigDecimal.valueOf(1000.00), 1001);
-    private static final Account ACCOUNT_2 = new Account(2002, BigDecimal.valueOf(0.00), 1002);
+    protected static final Account ACCOUNT_1 = new Account(2001, BigDecimal.valueOf(1000.00), 1001);
+    protected static final Account ACCOUNT_2 = new Account(2002, BigDecimal.valueOf(0.00), 1002);
 
     private JdbcAccountDao sut;
 

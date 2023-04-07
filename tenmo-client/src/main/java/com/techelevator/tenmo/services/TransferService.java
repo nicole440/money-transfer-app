@@ -7,6 +7,8 @@ import org.springframework.web.client.ResourceAccessException;
 import org.springframework.web.client.RestClientResponseException;
 import org.springframework.web.client.RestTemplate;
 
+import java.math.BigDecimal;
+
 public class TransferService {
 
     public static final String API_BASE_URL = "http://localhost:8080";
@@ -42,8 +44,8 @@ public class TransferService {
         boolean confirmation = false;
         HttpEntity<Transfer> entity = makeTransferEntity(transfer);
         try {
-            restTemplate.exchange(API_BASE_URL + "/transfers/new", HttpMethod.POST, entity, Transfer.class);
-            confirmation = true;
+            ResponseEntity<Boolean> response = restTemplate.exchange(API_BASE_URL + "/transfers/new", HttpMethod.POST, entity, Boolean.class);
+            confirmation = response.getBody();
         } catch (RestClientResponseException | ResourceAccessException e) {
             BasicLogger.log(e.getMessage());
         }
