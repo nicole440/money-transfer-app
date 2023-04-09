@@ -1,0 +1,2 @@
+2023-04-09T13:13:21.5907998 400 : [{"timestamp":"2023-04-09T17:13:21.575+00:00","status":400,"error":"Bad Request","message":"asdfkjkl;","path":"/transfers/new"}]
+2023-04-09T14:46:12.7607885 400 : [{"timestamp":"2023-04-09T18:46:12.745+00:00","status":400,"error":"Bad Request","message":"asdfkjkl;","path":"/transfers/new"}]

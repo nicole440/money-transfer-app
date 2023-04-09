@@ -6,10 +6,8 @@
   <component name="ChangeListManager">
     <list default="true" id="38414971-5a1f-47a5-a16b-9eb074288536" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/m02-capstone-client.iml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/../tenmo-server/src/main/java/com/techelevator/tenmo/dao/JdbcTransferDao.java" beforeDir="false" afterPath="$PROJECT_DIR$/../tenmo-server/src/main/java/com/techelevator/tenmo/dao/JdbcTransferDao.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../tenmo-server/src/test/java/com/techelevator/dao/JdbcAccountDaoTests.java" beforeDir="false" afterPath="$PROJECT_DIR$/../tenmo-server/src/test/java/com/techelevator/dao/JdbcAccountDaoTests.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../tenmo-server/src/test/java/com/techelevator/dao/JdbcTransferDaoTests.java" beforeDir="false" afterPath="$PROJECT_DIR$/../tenmo-server/src/test/java/com/techelevator/dao/JdbcTransferDaoTests.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../tenmo-server/src/test/resources/test-data.sql" beforeDir="false" afterPath="$PROJECT_DIR$/../tenmo-server/src/test/resources/test-data.sql" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -103,8 +101,8 @@
       <breakpoints>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/com/techelevator/tenmo/App.java</url>
-          <line>121</line>
-          <option name="timeStamp" value="17" />
+          <line>118</line>
+          <option name="timeStamp" value="19" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

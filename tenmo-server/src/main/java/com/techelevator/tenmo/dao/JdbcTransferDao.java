@@ -55,7 +55,7 @@ public class JdbcTransferDao implements TransferDao {
                 "WHERE user_id = ?; " +
                 "INSERT INTO transfer (transfer_type_id, transfer_status_id, account_from, account_to, amount) " +
                 "VALUES (2, 2, (SELECT account_id FROM account WHERE user_id = ?), (SELECT account_id FROM account WHERE user_id = ?), ?); " +
-                "COMMIT;";
+                "COMMIT; ";
         try {
             jdbcTemplate.update(sql, amount, senderId, amount, recipientId, senderId, recipientId, amount);
             success = true;
