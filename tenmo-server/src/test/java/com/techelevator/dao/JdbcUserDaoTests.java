@@ -37,7 +37,6 @@ public class JdbcUserDaoTests extends BaseDaoTests {
     @Test
     public void findIdByUsername_given_valid_user_returns_user_id() {
         int actualUserId = sut.findIdByUsername(USER_1.getUsername());
-
         Assert.assertEquals(USER_1.getId(), actualUserId);
     }
 
@@ -54,21 +53,18 @@ public class JdbcUserDaoTests extends BaseDaoTests {
     @Test
     public void findByUsername_given_valid_user_returns_user() {
         User actualUser = sut.findByUsername(USER_1.getUsername());
-
         Assert.assertEquals(USER_1, actualUser);
     }
 
     @Test
     public void getUserById_given_invalid_user_id_returns_null() {
         User actualUser = sut.getUserById(-1);
-
         Assert.assertNull(actualUser);
     }
 
     @Test
     public void getUserById_given_valid_user_id_returns_user() {
         User actualUser = sut.getUserById(USER_1.getId());
-
         Assert.assertEquals(USER_1, actualUser);
     }
 
@@ -100,14 +96,10 @@ public class JdbcUserDaoTests extends BaseDaoTests {
     @Test
     public void create_user_creates_a_user() {
         User newUser = new User(-1, "new", "user", "USER");
-
         boolean userWasCreated = sut.create(newUser.getUsername(), newUser.getPassword());
-
         Assert.assertTrue(userWasCreated);
-
         User actualUser = sut.findByUsername(newUser.getUsername());
         newUser.setId(actualUser.getId());
-
         actualUser.setPassword(newUser.getPassword()); // reset password back to unhashed password for testing
         Assert.assertEquals(newUser, actualUser);
     }

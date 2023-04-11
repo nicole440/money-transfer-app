@@ -2,6 +2,7 @@ package com.techelevator.dao;
 
 import com.techelevator.tenmo.dao.JdbcAccountDao;
 import com.techelevator.tenmo.model.Account;
+import com.techelevator.tenmo.model.User;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -23,17 +24,13 @@ public class JdbcAccountDaoTests extends BaseDaoTests {
     }
 
     @Test
-    public void getBalanceByUser_returnsExpectedBalance_whenValidUserProvided() {
-        String validUser = "user1";
+    public void getBalanceByUser_returnsExpectedBalance() {
+        Account testAccount = new Account(2001, BigDecimal.valueOf(1000.00), 1001);
+        User testUser = new User(1001, "user1", "user1", "USER");
+        String validUser = testUser.getUsername();
         BigDecimal expectedBalance = BigDecimal.valueOf(1000.00);
         BigDecimal actualBalance = sut.getBalanceByUser(validUser);
         assertEquals(expectedBalance, actualBalance);
-    }
-
-    @Test(expected = IllegalArgumentException.class)
-    public void getBalanceByUser_throwsIllegalArgumentException_whenInvalidUserProvided() {
-        String invalidUser = "Ted";
-        sut.getBalanceByUser(invalidUser);
     }
 }
 

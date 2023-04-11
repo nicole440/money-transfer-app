@@ -3,6 +3,7 @@ package com.techelevator.tenmo.controller;
 import com.techelevator.tenmo.dao.AccountDao;
 import com.techelevator.tenmo.dao.TransferDao;
 import com.techelevator.tenmo.dao.UserDao;
+import com.techelevator.tenmo.exceptions.IllegalTransferException;
 import com.techelevator.tenmo.model.Transfer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -49,7 +50,7 @@ public class TransferController {
 
     @ResponseStatus(HttpStatus.CREATED)
     @RequestMapping(path = "/send", method = RequestMethod.POST)
-    public boolean sendMoney(@RequestBody Transfer transfer, Principal principal) {
+    public boolean sendMoney(@RequestBody Transfer transfer, Principal principal) throws IllegalTransferException {
         int userId = transferDao.getUserId(principal.getName());
         boolean moneySent = transferDao.sendMoney(userId, transfer.getUserTo(), transfer.getAmount());
         if (moneySent == false) {

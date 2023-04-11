@@ -1,0 +1,1 @@
+2023-04-11T08:22:38.222167 500 : [{"timestamp":"2023-04-11T12:22:38.190+00:00","status":500,"error":"Internal Server Error","message":"Optional int parameter 'userId' is present but cannot be translated into a null value due to being declared as a primitive type. Consider declaring it as object wrapper for the corresponding primitive type.","path":"/transfers/history/3004"}]

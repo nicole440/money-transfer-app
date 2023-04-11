@@ -1,5 +1,6 @@
 package com.techelevator.tenmo.dao;
 
+import com.techelevator.tenmo.exceptions.IllegalTransferException;
 import com.techelevator.tenmo.model.Transfer;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -55,7 +56,7 @@ public class JdbcTransferDao implements TransferDao {
 
     // SQL tested via pgAdmin query: SUCCESS
     @Override
-    public boolean sendMoney(int senderId, int recipientId, BigDecimal amount) {
+    public boolean sendMoney(int senderId, int recipientId, BigDecimal amount) throws IllegalTransferException {
         boolean success = false;
         String sql = "START TRANSACTION; " +
                 "UPDATE account SET balance = balance - ? " +
@@ -72,6 +73,7 @@ public class JdbcTransferDao implements TransferDao {
             sql = "ROLLBACK;";
             jdbcTemplate.update(sql);
             success = false;
+            throw new IllegalTransferException();
         }
         return success;
     }

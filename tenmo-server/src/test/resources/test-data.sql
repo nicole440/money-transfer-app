@@ -75,45 +75,56 @@ INSERT INTO tenmo_user (username,password_hash,role) VALUES ('user1','user1','RO
 INSERT INTO tenmo_user (username,password_hash,role) VALUES ('user2','user2','ROLE_USER'); -- 1002
 INSERT INTO tenmo_user (username,password_hash,role) VALUES ('user3','user3','ROLE_USER');
 INSERT INTO tenmo_user (username,password_hash,role) VALUES ('user4','user4','ROLE_USER');
-INSERT INTO tenmo_user (username,password_hash,role) VALUES ('user5','user5','ROLE_USER');
-INSERT INTO tenmo_user (username,password_hash,role) VALUES ('user6','user6','ROLE_USER');
+--INSERT INTO tenmo_user (username,password_hash,role) VALUES ('user5','user5','ROLE_USER');
+--INSERT INTO tenmo_user (username,password_hash,role) VALUES ('user6','user6','ROLE_USER');
 
 COMMIT TRANSACTION;
 
-INSERT INTO account (user_id, balance) VALUES (1001, -45) RETURNING account_id;
-INSERT INTO account (user_id, balance) VALUES (1002, 0) RETURNING account_id;
-INSERT INTO account (user_id, balance) VALUES (1003, 3000) RETURNING account_id;
-INSERT INTO account (user_id, balance) VALUES (1004, 3000) RETURNING account_id;
-INSERT INTO account (user_id, balance) VALUES (1005, 3000) RETURNING account_id;
-INSERT INTO account (user_id, balance) VALUES (1006, 3000) RETURNING account_id;
+INSERT INTO account (user_id, balance) VALUES (1001, 1000.00); --2001
+INSERT INTO account (user_id, balance) VALUES (1002, 1000.00); --2002
+INSERT INTO account (user_id, balance) VALUES (1003, 1000.00); --2003
+INSERT INTO account (user_id, balance) VALUES (1004, 0.00); --2004
 
--- Successful transfer
-Start Transaction;
-UPDATE account SET balance = (balance - 1000) WHERE account_id = 2003;
-UPDATE account SET balance = (balance + 1000) WHERE account_id = 2002;
-INSERT INTO transfer (transfer_type_id, transfer_status_id, account_from, account_to, amount) VALUES (2, 2, 2003, 2002, 1000);
-COMMIT;
+INSERT INTO transfer (transfer_type_id, transfer_status_id, account_from, account_to, amount) VALUES (2, 2, 2001, 2002, 100.00);
+INSERT INTO transfer (transfer_type_id, transfer_status_id, account_from, account_to, amount) VALUES (2, 2, 2002, 2003, 50.00);
+INSERT INTO transfer (transfer_type_id, transfer_status_id, account_from, account_to, amount) VALUES (2, 2, 2003, 2002, 100.00);
+INSERT INTO transfer (transfer_type_id, transfer_status_id, account_from, account_to, amount) VALUES (2, 2, 2001, 2003, 50.00);
+INSERT INTO transfer (transfer_type_id, transfer_status_id, account_from, account_to, amount) VALUES (2, 2, 2004, 2003, 20.00);
 
--- Successful transfer
-Start Transaction;
-UPDATE account SET balance = (balance - 46) WHERE account_id = 2003;
-UPDATE account SET balance = (balance + 46) WHERE account_id = 2001;
-INSERT INTO transfer (transfer_type_id, transfer_status_id, account_from, account_to, amount) VALUES (2, 2, 2003, 2001, 46) RETURNING transfer_id;
-COMMIT;
+--INSERT INTO transfer (transfer_type_id, transfer_status_id, account_from, account_to, amount) VALUES (1, 1, 2002, 2003, 70.00);
+--INSERT INTO transfer (transfer_type_id, transfer_status_id, account_from, account_to, amount) VALUES (1, 1, 2001, 2003, 100.00);
+--INSERT INTO transfer (transfer_type_id, transfer_status_id, account_from, account_to, amount) VALUES (1, 1, 2001, 2003, 10000.00);
+
+---- Successful transfer
+--Start Transaction;
+--UPDATE account SET balance = (balance - 1000) WHERE account_id = 2003;
+--UPDATE account SET balance = (balance + 1000) WHERE account_id = 2002;
+--INSERT INTO transfer (transfer_type_id, transfer_status_id, account_from, account_to, amount)
+--VALUES (2, 2, 2003, 2002, 1000);
+--COMMIT;
+--
+---- Successful transfer
+--Start Transaction;
+--UPDATE account SET balance = (balance - 46) WHERE account_id = 2003;
+--UPDATE account SET balance = (balance + 46) WHERE account_id = 2001;
+--INSERT INTO transfer (transfer_type_id, transfer_status_id, account_from, account_to, amount)
+--VALUES (2, 2, 2003, 2001, 46)
+--RETURNING transfer_id;
+--COMMIT;
 
 SELECT * FROM tenmo_user;
 SELECT * FROM account;
 SELECT * FROM transfer;
-
-SELECT balance FROM account
-JOIN tenmo_user ON account.user_id = tenmo_user.user_id
-WHERE username = 'user1';
-
-SELECT balance FROM account
-JOIN tenmo_user ON account.user_id = tenmo_user.user_id
-WHERE username = 'user1';
-
-SELECT transfer_type_id, transfer_status_id, account_from, account_to, amount
-FROM transfer WHERE transfer_id = 3001;
+--
+--SELECT balance FROM account
+--JOIN tenmo_user ON account.user_id = tenmo_user.user_id
+--WHERE username = 'user1';
+--
+--SELECT balance FROM account
+--JOIN tenmo_user ON account.user_id = tenmo_user.user_id
+--WHERE username = 'user1';
+--
+--SELECT transfer_type_id, transfer_status_id, account_from, account_to, amount
+--FROM transfer WHERE transfer_id = 3001;
 
 ROLLBACK;
