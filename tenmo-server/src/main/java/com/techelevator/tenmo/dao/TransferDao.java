@@ -8,15 +8,15 @@ public interface TransferDao {
 
     List<Transfer> listTransfersByUser(int userId);
 
-    String getTransferDetails(int transferId);
+    Transfer getTransferDetails(int transferId, int userId);
 
     boolean initiateTransfer(int senderId, int recipientId, BigDecimal amount);
 
     int getUserId(String userName);
 
-    int getMaxId();
-
-    int getMaxIdPlusOne();
+//    int getMaxId();
+//
+//    int getMaxIdPlusOne();
 
     // Request money (optional)
 

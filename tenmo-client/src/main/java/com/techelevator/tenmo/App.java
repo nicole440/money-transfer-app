@@ -96,12 +96,13 @@ public class App {
     }
 
     private void viewTransferHistory() {
-        Transfer[] transferArray = transferService.getAllTransfers();
+ //     int userId = currentUser.getUser().getId();
+        Transfer[] transferArray = transferService.getTransferHistory();
         consoleService.printTransferHistory(transferArray);
         int transferId = consoleService.selectTransfer(transferArray);
         if (transferId != -1) {
-            Transfer transfer = transferService.getTransferDetailsByTransferId(transferId);
-            consoleService.printSingleTransfer(transfer);
+            Transfer singleTransfer = transferService.getTransferDetailsByTransferId(transferId);
+            consoleService.printSingleTransfer(singleTransfer);
         }
     }
 

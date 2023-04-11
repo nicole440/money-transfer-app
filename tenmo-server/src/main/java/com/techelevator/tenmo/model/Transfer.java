@@ -24,11 +24,11 @@ public class Transfer {
         this.amount = amount;
     }
 
-    public Transfer(int userFrom, int userTo, BigDecimal amount) {
-        this.userFrom = userFrom;
-        this.userTo = userTo;
-        this.amount = amount;
-    }
+//    public Transfer(int userFrom, int userTo, BigDecimal amount) {
+//        this.userFrom = userFrom;
+//        this.userTo = userTo;
+//        this.amount = amount;
+//    }
 
     public int getTransferId() {
         return transferId;

@@ -7,8 +7,6 @@ import org.springframework.web.client.ResourceAccessException;
 import org.springframework.web.client.RestClientResponseException;
 import org.springframework.web.client.RestTemplate;
 
-import java.math.BigDecimal;
-
 public class TransferService {
 
     public static final String API_BASE_URL = "http://localhost:8080";
@@ -19,20 +17,22 @@ public class TransferService {
         this.authToken = authToken;
     }
 
-    public Transfer[] getAllTransfers() {
+    public Transfer[] getTransferHistory() {
         Transfer[] transferArray = null;
         try {
-            transferArray = restTemplate.exchange(API_BASE_URL + "/transfers/all", HttpMethod.GET, makeAuthEntity(), Transfer[].class).getBody();
+            ResponseEntity<Transfer[]> response = restTemplate.exchange(API_BASE_URL + "/transfers/history", HttpMethod.GET, makeAuthEntity(), Transfer[].class);
+            transferArray = response.getBody();
         } catch (RestClientResponseException | ResourceAccessException e) {
             BasicLogger.log(e.getMessage());
         }
         return transferArray;
     }
 
+    // TODO fix transfer details methods
     public Transfer getTransferDetailsByTransferId(int transferId) {
         Transfer transfer = null;
         try {
-            ResponseEntity<Transfer> response = restTemplate.exchange(API_BASE_URL + "/transfers", HttpMethod.GET, makeAuthEntity(), Transfer.class);
+            ResponseEntity<Transfer> response = restTemplate.exchange(API_BASE_URL + "/transfers/history/" + transferId, HttpMethod.GET, makeAuthEntity(), Transfer.class);
             transfer = response.getBody();
         } catch (RestClientResponseException | ResourceAccessException e) {
             BasicLogger.log(e.getMessage());

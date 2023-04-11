@@ -35,14 +35,21 @@ public class TransferController {
         this.accountDao = accountDao;
     }
 
-    @RequestMapping(path = "/{id}", method = RequestMethod.GET)
-    public List<Transfer> getTransactionHistory(int userId) {
-        return transferDao.listTransfersByUser(userId);
+    @RequestMapping(path = "/history", method = RequestMethod.GET)
+    public List<Transfer> getTransactionHistory(Principal principal) {
+        int currentUserID = userDao.findIdByUsername(principal.getName());
+        List<Transfer> transferList = transferDao.listTransfersByUser(currentUserID);
+        return transferList;
+    }
+
+    @RequestMapping(path = "/history/{transferId}", method = RequestMethod.GET)
+    public Transfer getTransferDetailsById(@PathVariable int transferId, int userId) {
+        return transferDao.getTransferDetails(transferId, userId);
     }
 
     @ResponseStatus(HttpStatus.CREATED)
     @RequestMapping(path = "/new", method = RequestMethod.POST)
-    public boolean createTransfer(Transfer transfer, Principal principal) {
+    public boolean createTransfer(@RequestBody Transfer transfer, Principal principal) {
         int userId = transferDao.getUserId(principal.getName());
         boolean moneySent = transferDao.initiateTransfer(userId, transfer.getUserTo(), transfer.getAmount());
         if (moneySent == false) {
@@ -51,13 +58,8 @@ public class TransferController {
         return moneySent;
     }
 
-    @RequestMapping(path = "/{id}/details", method = RequestMethod.GET)
-    public String getTransferDetailsById(@PathVariable int transferId) {
-        return transferDao.getTransferDetails(transferId);
-    }
-
-    @RequestMapping(path = "/{transferId}", method = RequestMethod.GET)
-    public int getTransferId(@PathVariable int transferId) {
-        return transferDao.getMaxIdPlusOne();
-    }
+//    @RequestMapping(path = "/{transferId}", method = RequestMethod.GET)
+//    public int getTransferId(@PathVariable int transferId) {
+//        return transferDao.getMaxIdPlusOne();
+//    }
 }

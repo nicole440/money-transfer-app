@@ -3,7 +3,6 @@ package com.techelevator.tenmo.services;
 import com.techelevator.tenmo.model.Transfer;
 import com.techelevator.tenmo.model.User;
 import com.techelevator.tenmo.model.UserCredentials;
-
 import java.math.BigDecimal;
 import java.util.Scanner;
 
@@ -64,7 +63,7 @@ public class ConsoleService {
             try {
                 return Integer.parseInt(scanner.nextLine());
             } catch (NumberFormatException e) {
-                System.out.println("Please enter a valid user ID.");
+                System.out.println("Please enter a valid number.");
             }
         }
     }
@@ -94,7 +93,7 @@ public class ConsoleService {
     }
 
     public void sendUnsuccessful() {
-        System.out.println("Transfer failed. I'm sorry.");
+        System.out.println("Transfer failed. Please try again later.");
     }
 
     public void printErrorMessage() {
@@ -120,29 +119,36 @@ public class ConsoleService {
         }
     }
 
-    public void printTransferHistory(Transfer[] transferArray) {
-        System.out.println("TRANSFER HISTORY");
-        System.out.println("ID\t\tStatus\t\tFrom/To\t\tAmount\n");
+    public void printTransferHistory(Transfer[] transfers) {
+        System.out.println("------------------------------------------------------");
+        System.out.println("                   TRANSFER HISTORY");
+        System.out.println("------------------------------------------------------");
+        printHistory(transfers);
+    }
+
+    public void printHistory(Transfer[] transferArray) {
+        System.out.println("Transfer ID\t\tStatus\t\tFrom/To\t\t\tAmount\n");
         for (Transfer transfer : transferArray) {
-            System.out.print(transfer.getTransferId() + "\t");
-            System.out.print(transfer.getTransferStatusId() + "\t");
+            System.out.print("\t" + transfer.getTransferId() + "\t\t");
+            System.out.print(transfer.getTransferStatusId() + "\t\t");
             System.out.print("From: " + transfer.getUserFrom());
-            System.out.print("To:   " + transfer.getUserTo());
+            System.out.print(" To: " + transfer.getUserTo());
             System.out.print("     $" + transfer.getAmount() + "\n");
         }
     }
 
     public int selectTransfer(Transfer[] transfers) {
-        int transferId = promptForInt("Please select a transfer ID.");
+        int transferId = promptForInt("\nPlease enter a transfer ID for more details: ");
         for (Transfer transfer : transfers) {
             if (transferId == transfer.getTransferId()) {
                 return transferId;
             }
         }
-        System.out.println("Transfer ID not found.  Please enter correct Transfer ID.");
+        System.out.println("Transfer ID not found.  Please enter a correct transfer ID. ");
         return -1;
     }
 
+    // TODO fix null pointer
     public void printSingleTransfer(Transfer transfer) {
         System.out.println("TRANSFER DETAILS\nTransfer ID: " + transfer.getTransferId() + "\nAmount : $" + transfer.getAmount() + "\nFrom: " + transfer.getUserFrom() + "\nTo: " + transfer.getUserTo() + "\nStatus: " + transfer.getTransferStatusId() + "\nType: " + transfer.getTransferTypeId());
     }

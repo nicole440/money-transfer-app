@@ -80,7 +80,7 @@ public class JdbcTransferDaoTests extends BaseDaoTests {
                 " | Amount: " + 1000.00 +
                 " | Transfer Status: " + 2;
         // Act
-        String actual = sut.getTransferDetails(3001);
+        Transfer actual = sut.getTransferDetails(3001, 2001);
         // Assert
         Assert.assertEquals(expected, actual);
     }
