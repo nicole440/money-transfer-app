@@ -24,12 +24,6 @@ public class Transfer {
         this.amount = amount;
     }
 
-//    public Transfer(int userFrom, int userTo, BigDecimal amount) {
-//        this.userFrom = userFrom;
-//        this.userTo = userTo;
-//        this.amount = amount;
-//    }
-
     public int getTransferId() {
         return transferId;
     }
@@ -78,6 +72,7 @@ public class Transfer {
         this.amount = amount;
     }
 
+    // TODO determine whether this is needed
     @Override
     public String toString() {
         return "Transfer ID: " + getTransferId() +

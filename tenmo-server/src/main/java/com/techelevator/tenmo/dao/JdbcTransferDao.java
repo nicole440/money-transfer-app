@@ -55,7 +55,7 @@ public class JdbcTransferDao implements TransferDao {
 
     // SQL tested via pgAdmin query: SUCCESS
     @Override
-    public boolean initiateTransfer(int senderId, int recipientId, BigDecimal amount) {
+    public boolean sendMoney(int senderId, int recipientId, BigDecimal amount) {
         boolean success = false;
         String sql = "START TRANSACTION; " +
                 "UPDATE account SET balance = balance - ? " +
@@ -78,6 +78,16 @@ public class JdbcTransferDao implements TransferDao {
 
     // SQL tested via pgAdmin query: SUCCESS
     @Override
+    public void requestMoney(int recipientId, int senderId, BigDecimal amount) {
+        String sql = "INSERT INTO transfer (transfer_type_id, transfer_status_id, account_to, account_from, amount) " +
+                "VALUES (1, 1, (SELECT account_id FROM account WHERE user_id = ?), (SELECT account_id FROM account WHERE user_id = ?), ?);";
+        jdbcTemplate.update(sql, recipientId, senderId, amount);
+    }
+
+    // TODO add functionality to approve or reject transaction request
+
+    // SQL tested via pgAdmin query: SUCCESS
+    @Override
     public int getUserId(String currentUserName) {
         String sql = "SELECT user_id FROM tenmo_user WHERE username = ?;";
         int userId = jdbcTemplate.queryForObject(sql, Integer.class, currentUserName);
@@ -92,7 +102,7 @@ public class JdbcTransferDao implements TransferDao {
         return (returnedAccountId == accountId);
     }
 
-//    // TODO do I need these?
+//    // TODO do I need these getMaxId() methods? I don't remember why we wanted them.
 //    public int getMaxId() {
 //        List<Transfer> transferIds = new ArrayList<>();
 //        String transfers = "SELECT transfer_id FROM transfer;";

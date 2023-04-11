@@ -44,7 +44,7 @@ public class TransferService {
         boolean confirmation = false;
         HttpEntity<Transfer> entity = makeTransferEntity(transfer);
         try {
-            ResponseEntity<Boolean> response = restTemplate.exchange(API_BASE_URL + "/transfers/new", HttpMethod.POST, entity, Boolean.class);
+            ResponseEntity<Boolean> response = restTemplate.exchange(API_BASE_URL + "/transfers/send", HttpMethod.POST, entity, Boolean.class);
             confirmation = response.getBody();
         } catch (RestClientResponseException | ResourceAccessException e) {
             BasicLogger.log(e.getMessage());
@@ -52,6 +52,21 @@ public class TransferService {
         return confirmation;
     }
 
+    public boolean requestMoney(Transfer transfer) {
+        boolean confirmation = false;
+        HttpEntity<Transfer> entity = makeTransferEntity(transfer);
+        try {
+            ResponseEntity<Boolean> response = restTemplate.exchange(API_BASE_URL + "/transfers/request", HttpMethod.POST, entity, Boolean.class);
+            confirmation = response.getBody();
+        } catch (RestClientResponseException | ResourceAccessException e) {
+            BasicLogger.log(e.getMessage());
+        }
+        return confirmation;
+    }
+
+    // TODO add functionality to approve or reject transaction request
+
+    // TODO determine whether getTransferId method is needed here. I don't remember why we made this.
 //    public Integer getTransferId(int transferId) {
 //        try {
 //            restTemplate.exchange(API_BASE_URL + "/transfers/{transferId}", HttpMethod.GET, makeAuthEntity(), Integer.class);

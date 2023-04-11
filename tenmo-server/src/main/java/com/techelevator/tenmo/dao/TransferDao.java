@@ -10,14 +10,11 @@ public interface TransferDao {
 
     Transfer getTransferDetails(int transferId, int userId);
 
-    boolean initiateTransfer(int senderId, int recipientId, BigDecimal amount);
+    boolean sendMoney(int senderId, int recipientId, BigDecimal amount);
+
+    void requestMoney(int recipientId, int senderId, BigDecimal amount);
 
     int getUserId(String userName);
 
-//    int getMaxId();
-//
-//    int getMaxIdPlusOne();
-
-    // Request money (optional)
 
 }

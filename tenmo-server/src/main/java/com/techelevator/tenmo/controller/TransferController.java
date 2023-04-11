@@ -9,7 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
-
+import java.math.BigDecimal;
 import java.security.Principal;
 import java.util.List;
 
@@ -48,18 +48,31 @@ public class TransferController {
     }
 
     @ResponseStatus(HttpStatus.CREATED)
-    @RequestMapping(path = "/new", method = RequestMethod.POST)
-    public boolean createTransfer(@RequestBody Transfer transfer, Principal principal) {
+    @RequestMapping(path = "/send", method = RequestMethod.POST)
+    public boolean sendMoney(@RequestBody Transfer transfer, Principal principal) {
         int userId = transferDao.getUserId(principal.getName());
-        boolean moneySent = transferDao.initiateTransfer(userId, transfer.getUserTo(), transfer.getAmount());
+        boolean moneySent = transferDao.sendMoney(userId, transfer.getUserTo(), transfer.getAmount());
         if (moneySent == false) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "asdfkjkl;");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid transfer."); // TODO make response more descriptive
         }
         return moneySent;
     }
 
-//    @RequestMapping(path = "/{transferId}", method = RequestMethod.GET)
-//    public int getTransferId(@PathVariable int transferId) {
-//        return transferDao.getMaxIdPlusOne();
-//    }
+    @ResponseStatus(HttpStatus.CREATED)
+    @RequestMapping(path = "/request", method = RequestMethod.POST)
+    public boolean requestMoney(@RequestBody Transfer transfer, Principal principal) {
+        boolean transferRequested = false;
+        int userId = transferDao.getUserId(principal.getName());
+        BigDecimal amount = transfer.getAmount();
+        try {
+            transferDao.requestMoney(userId, transfer.getUserFrom(), amount);
+            transferRequested = true;
+        } catch (ResponseStatusException e) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid transfer."); // TODO make response more descriptive
+        }
+        return transferRequested;
+    }
+
+    // TODO add functionality to approve or reject transaction request
+
 }

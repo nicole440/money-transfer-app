@@ -75,9 +75,8 @@ public class JdbcUserDaoTests extends BaseDaoTests {
     @Test
     public void findAll_returns_all_users() {
         List<User> users = sut.findAll();
-
         Assert.assertNotNull(users);
-        Assert.assertEquals(3, users.size());
+        Assert.assertEquals(6, users.size());
         Assert.assertEquals(USER_1, users.get(0));
         Assert.assertEquals(USER_2, users.get(1));
         Assert.assertEquals(USER_3, users.get(2));

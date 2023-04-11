@@ -96,7 +96,6 @@ public class App {
     }
 
     private void viewTransferHistory() {
- //     int userId = currentUser.getUser().getId();
         Transfer[] transferArray = transferService.getTransferHistory();
         consoleService.printTransferHistory(transferArray);
         int transferId = consoleService.selectTransfer(transferArray);
@@ -144,12 +143,23 @@ public class App {
     // REQUEST MONEY METHODS (OPTIONAL)
 
     private void requestBucks() {
-        // TODO Auto-generated method stub
-        // Call to TransferService
+        User[] users = userService.getAuthenticatedUsersArray();
+        consoleService.printUsers(users);
+        int senderId = consoleService.promptForInt("\nEnter the ID of the user from whom you wish to funds: ");
+        BigDecimal transferAmount = consoleService.promptForBigDecimal("Please enter the amount (as a decimal) that you'd like to request: ");
+        Transfer transfer = new Transfer(senderId, transferAmount);
+        transfer.setUserTo(currentUser.getUser().getId());
+        transfer.setAmount(transferAmount);
+        transfer.setUserFrom(senderId);
+        if (isValidRecipient(transfer)) {
+            transferService.requestMoney(transfer);
+            // TODO add call to console service requesting success or failure message
+        } else {
+
+        }
     }
 
     private void viewPendingRequests() {
-        // TODO Auto-generated method stub
-        // Call to TransferService
+        // TODO Add functionality to view pending requests
     }
 }

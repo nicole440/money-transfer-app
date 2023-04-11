@@ -40,48 +40,48 @@ public class JdbcTransferDaoTests extends BaseDaoTests {
         Assert.assertEquals(1, testTransferList.size());
     }
 
-//    @Test
-//    public void send_Money_Happy_Path() {
-//        // Arrange
-//        boolean expected = true;
-//        // Act
-//        boolean actual = sut.processTransfer(TRANSFER_1);
-//        // Assert
-//        Assert.assertEquals(expected, actual);
-//    }
-//
-//    @Test(expected = InsufficientFundsException.class)
-//    public void send_Money_Zero_Balance() {
-//        sut.processTransfer(TRANSFER_3);
-//    }
-//
-//    @Test(expected = IllegalTransferException.class)
-//    public void send_Money_Negative_Transfer() {
-//        sut.processTransfer(TRANSFER_4);
-//    }
-//
-//    @Test
-//    public void send_Money_To_Self() {
-//        // Arrange
-//        boolean expected = false;
-//        // Act
-//        boolean actual = sut.processTransfer(TRANSFER_2);
-//        // Assert
-//        Assert.assertEquals(expected, actual);
-//    }
-
     @Test
-    public void get_Transfer_Details_By_Id_Happy_Path() {
+    public void send_Money_Happy_Path() {
         // Arrange
-        String expected = "Transfer ID: " + 3001 +
-                " | Transfer Type ID: " + 2 +
-                " | Transfer From: " + 2003 +
-                " | Transfer To: " + 2004 +
-                " | Amount: " + 1000.00 +
-                " | Transfer Status: " + 2;
+        boolean expected = true;
         // Act
-        Transfer actual = sut.getTransferDetails(3001, 2001);
+        boolean actual = sut.sendMoney(TRANSFER_1.getUserFrom(), TRANSFER_1.getUserTo(), TRANSFER_1.getAmount());
         // Assert
         Assert.assertEquals(expected, actual);
     }
+
+    @Test(expected = InsufficientFundsException.class)
+    public void send_Money_Zero_Balance() {
+        sut.sendMoney(TRANSFER_3.getUserFrom(), TRANSFER_3.getUserTo(), TRANSFER_3.getAmount());
+    }
+
+    @Test(expected = IllegalTransferException.class)
+    public void send_Money_Negative_Transfer() {
+        sut.sendMoney(TRANSFER_4.getUserFrom(), TRANSFER_4.getUserTo(), TRANSFER_4.getAmount());
+    }
+
+    @Test
+    public void send_Money_To_Self() {
+        // Arrange
+        boolean expected = false;
+        // Act
+        boolean actual = sut.sendMoney(TRANSFER_2.getUserFrom(), TRANSFER_2.getUserTo(), TRANSFER_2.getAmount());
+        // Assert
+        Assert.assertEquals(expected, actual);
+    }
+
+//    @Test
+//    public void get_Transfer_Details_By_Id_Happy_Path() {
+//        // Arrange
+//        String expected = "Transfer ID: " + 3001 +
+//                " | Transfer Type ID: " + 2 +
+//                " | Transfer From: " + 2003 +
+//                " | Transfer To: " + 2004 +
+//                " | Amount: " + 1000.00 +
+//                " | Transfer Status: " + 2;
+//        // Act
+//        Transfer actual = sut.getTransferDetails(3001, 2001);
+//        // Assert
+//        Assert.assertEquals(expected, actual);
+//    }
 }

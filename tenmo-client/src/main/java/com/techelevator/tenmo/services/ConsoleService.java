@@ -96,6 +96,8 @@ public class ConsoleService {
         System.out.println("Transfer failed. Please try again later.");
     }
 
+    // TODO Add print statements reflecting success or failure of transfer requests
+
     public void printErrorMessage() {
         System.out.println("An error occurred. Check the log for details.");
     }
@@ -152,4 +154,5 @@ public class ConsoleService {
     public void printSingleTransfer(Transfer transfer) {
         System.out.println("TRANSFER DETAILS\nTransfer ID: " + transfer.getTransferId() + "\nAmount : $" + transfer.getAmount() + "\nFrom: " + transfer.getUserFrom() + "\nTo: " + transfer.getUserTo() + "\nStatus: " + transfer.getTransferStatusId() + "\nType: " + transfer.getTransferTypeId());
     }
+
 }
