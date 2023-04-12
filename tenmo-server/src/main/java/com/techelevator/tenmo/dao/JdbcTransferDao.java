@@ -35,6 +35,7 @@ public class JdbcTransferDao implements TransferDao {
         return history;
     }
 
+    // TODO fix this process so it stops returning an account number
     @Override
     public Transfer getTransferDetails(int transferId, int userId) {
         Transfer transfer = null;
@@ -96,7 +97,6 @@ public class JdbcTransferDao implements TransferDao {
         return (returnedAccountId == accountId);
     }
 
-    // TODO fix this method so it stops returning an account number!
     private Transfer mapRowToTransfer(SqlRowSet rowSet, int userId) {
         Transfer transfer = new Transfer();
         transfer.setTransferId(rowSet.getInt("transfer_id"));

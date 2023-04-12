@@ -1,0 +1,1 @@
+2023-04-12T11:26:48.6118441 500 : [{"timestamp":"2023-04-12T15:26:48.583+00:00","status":500,"error":"Internal Server Error","message":"PreparedStatementCallback; bad SQL grammar [SELECT transfer.transfer_type_id, transfer.transfer_sta... (870 bytes)]
