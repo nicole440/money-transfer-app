@@ -13,9 +13,7 @@ public class Transfer {
     public Transfer() {
     }
 
-    public Transfer(int userTo, BigDecimal amount) {
-        this.userTo = userTo;
-        this.amount = amount;
+    public Transfer(int recipient, BigDecimal transferAmount) {
     }
 
     public int getTransferId() {

@@ -28,7 +28,7 @@ public class TransferService {
         return transferArray;
     }
 
-    // TODO fix transfer details methods
+    // TODO fix transfer details methods - Null Pointer Exception
     public Transfer getTransferDetailsByTransferId(int transferId) {
         Transfer transfer = null;
         try {
@@ -66,15 +66,6 @@ public class TransferService {
 
     // TODO add functionality to approve or reject transaction request
 
-    // TODO determine whether getTransferId method is needed here. I don't remember why we made this.
-//    public Integer getTransferId(int transferId) {
-//        try {
-//            restTemplate.exchange(API_BASE_URL + "/transfers/{transferId}", HttpMethod.GET, makeAuthEntity(), Integer.class);
-//        } catch (RestClientResponseException | ResourceAccessException e) {
-//            BasicLogger.log(e.getMessage());
-//        }
-//        return transferId;
-//    }
 
     private HttpEntity<Transfer> makeTransferEntity(Transfer transfer) {
         HttpHeaders headers = new HttpHeaders();

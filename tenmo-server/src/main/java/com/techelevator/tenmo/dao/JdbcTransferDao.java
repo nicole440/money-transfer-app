@@ -1,6 +1,6 @@
 package com.techelevator.tenmo.dao;
 
-import com.techelevator.tenmo.exceptions.IllegalTransferException;
+import com.techelevator.tenmo.exceptions.InsufficientFundsException;
 import com.techelevator.tenmo.model.Transfer;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -19,14 +19,13 @@ public class JdbcTransferDao implements TransferDao {
         this.jdbcTemplate = jdbcTemplate;
     }
 
-    // SQL tested via pgAdmin query: SUCCESS
     public List<Transfer> listTransfersByUser(int userId) {
         String sql = "SELECT transfer_id, transfer.transfer_type_id, transfer.transfer_status_id, account_to, account_from, amount " +
                 "FROM transfer " +
                 "JOIN transfer_type ON transfer.transfer_type_id = transfer_type.transfer_type_id " +
                 "JOIN transfer_status ON transfer.transfer_status_id = transfer_status.transfer_status_id " +
                 "JOIN account as sender ON transfer.account_from = sender.account_id " +
-                "Join account as recipient ON transfer.account_to = recipient.account_id " +
+                "JOIN account as recipient ON transfer.account_to = recipient.account_id " +
                 "WHERE sender.user_id = ? OR recipient.user_id = ?;";
         SqlRowSet results = jdbcTemplate.queryForRowSet(sql, userId, userId);
         List<Transfer> history = new ArrayList<>();
@@ -36,7 +35,6 @@ public class JdbcTransferDao implements TransferDao {
         return history;
     }
 
-    // SQL tested via pgAdmin query: SUCCESS
     @Override
     public Transfer getTransferDetails(int transferId, int userId) {
         Transfer transfer = null;
@@ -46,7 +44,7 @@ public class JdbcTransferDao implements TransferDao {
                 "JOIN transfer_status ON transfer.transfer_status_id = transfer_status.transfer_status_id " +
                 "JOIN account as sender ON transfer.account_from = sender.account_id " +
                 "JOIN account as recipient ON transfer.account_to = recipient.account_id " +
-                "WHERE transfer_id = ? AND sender.user_id = ? OR recipient.user_id = ?;";
+                "WHERE transfer_id = ? AND (sender.user_id = ? OR recipient.user_id = ?);";
         SqlRowSet result = jdbcTemplate.queryForRowSet(sql, Transfer.class, transferId, userId, userId);
         if (result.next()) {
             transfer = mapRowToTransfer(result, userId);
@@ -54,10 +52,8 @@ public class JdbcTransferDao implements TransferDao {
         return transfer;
     }
 
-    // SQL tested via pgAdmin query: SUCCESS
     @Override
-    public boolean sendMoney(int senderId, int recipientId, BigDecimal amount) throws IllegalTransferException {
-        boolean success = false;
+    public boolean sendMoney(int senderId, int recipientId, BigDecimal amount) throws InsufficientFundsException {
         String sql = "START TRANSACTION; " +
                 "UPDATE account SET balance = balance - ? " +
                 "WHERE user_id = ?; " +
@@ -68,17 +64,14 @@ public class JdbcTransferDao implements TransferDao {
                 "COMMIT; ";
         try {
             jdbcTemplate.update(sql, amount, senderId, amount, recipientId, senderId, recipientId, amount);
-            success = true;
         } catch (DataIntegrityViolationException e) {
             sql = "ROLLBACK;";
             jdbcTemplate.update(sql);
-            success = false;
-            throw new IllegalTransferException();
+            throw new InsufficientFundsException();
         }
-        return success;
+        return true;
     }
 
-    // SQL tested via pgAdmin query: SUCCESS
     @Override
     public void requestMoney(int recipientId, int senderId, BigDecimal amount) {
         String sql = "INSERT INTO transfer (transfer_type_id, transfer_status_id, account_to, account_from, amount) " +
@@ -88,7 +81,6 @@ public class JdbcTransferDao implements TransferDao {
 
     // TODO add functionality to approve or reject transaction request
 
-    // SQL tested via pgAdmin query: SUCCESS
     @Override
     public int getUserId(String currentUserName) {
         String sql = "SELECT user_id FROM tenmo_user WHERE username = ?;";
@@ -104,27 +96,7 @@ public class JdbcTransferDao implements TransferDao {
         return (returnedAccountId == accountId);
     }
 
-//    // TODO do I need these getMaxId() methods? I don't remember why we wanted them.
-//    public int getMaxId() {
-//        List<Transfer> transferIds = new ArrayList<>();
-//        String transfers = "SELECT transfer_id FROM transfer;";
-//        SqlRowSet results = jdbcTemplate.queryForRowSet(transfers);
-//        while (results.next()) {
-//            transferIds.add(mapRowToTransfer(results, userId));
-//        }
-//        int maxId = 3001;
-//        for (Transfer transfer : transferIds) {
-//            if (transfer.getTransferId() > maxId) {
-//                maxId = transfer.getTransferId();
-//            }
-//        }
-//        return maxId;
-//    }
-//
-//    public int getMaxIdPlusOne() {
-//        return getMaxId() + 1;
-//    }
-
+    // TODO fix this method so it stops returning an account number!
     private Transfer mapRowToTransfer(SqlRowSet rowSet, int userId) {
         Transfer transfer = new Transfer();
         transfer.setTransferId(rowSet.getInt("transfer_id"));

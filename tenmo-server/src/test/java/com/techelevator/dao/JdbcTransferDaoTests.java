@@ -9,7 +9,6 @@ import com.techelevator.tenmo.model.User;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 import java.math.BigDecimal;
@@ -29,6 +28,7 @@ public class JdbcTransferDaoTests extends BaseDaoTests {
     protected static final Transfer TRANSFER_2 = new Transfer(3002, 2, 2, 1002, 1003, BigDecimal.valueOf(50.00));
     protected static final Transfer TRANSFER_3 = new Transfer(3003, 2, 2, 1003, 1002, BigDecimal.valueOf(100.00));
     protected static final Transfer TRANSFER_4 = new Transfer(3004, 2, 2, 1001, 1003, BigDecimal.valueOf(50.00));
+
     protected static final Transfer TRANSFER_5_ZERO_BALANCE = new Transfer(3005, 2, 2, 1004, 1003, BigDecimal.valueOf(20.00));
     protected static final Transfer TRANSFER_6_NEGATIVE_AMOUNT = new Transfer(3006, 2, 2, 1001, 1003, BigDecimal.valueOf(-45.00));
 
@@ -42,15 +42,15 @@ public class JdbcTransferDaoTests extends BaseDaoTests {
 
     @Test
     public void listTransfersByUser_lists_all_transfers_for_user() {
-        List<Transfer> testTransferList = sut.listTransfersByUser(1002);
+        List<Transfer> testTransferList = sut.listTransfersByUser(1001);
         Assert.assertNotNull(testTransferList);
-        int expected = 3;
+        int expected = 2;
         int actual = testTransferList.size();
         Assert.assertEquals(expected, actual);
     }
 
     @Test
-    public void sendMoney_Happy_Path() throws IllegalTransferException {
+    public void sendMoney_Happy_Path() throws InsufficientFundsException {
         // Arrange
         boolean expected = true;
         // Act
@@ -59,19 +59,19 @@ public class JdbcTransferDaoTests extends BaseDaoTests {
         Assert.assertEquals(expected, actual);
     }
 
-    @Test(expected = IllegalTransferException.class)
-    public void sendMoney_Returns_False_If_Sender_Has_Zero_Balance() throws IllegalTransferException {
+    @Test(expected = InsufficientFundsException.class)
+    public void sendMoney_Returns_False_If_Sender_Has_Zero_Balance() throws InsufficientFundsException {
         boolean actual = sut.sendMoney(TRANSFER_5_ZERO_BALANCE.getUserFrom(), TRANSFER_5_ZERO_BALANCE.getUserTo(), TRANSFER_5_ZERO_BALANCE.getAmount());
         Assert.assertFalse(actual);
     }
 
     @Test(expected = IllegalTransferException.class)
-    public void sendMoney_Negative_Transfer() throws IllegalTransferException {
+    public void sendMoney_Negative_Transfer() throws IllegalTransferException, InsufficientFundsException {
         sut.sendMoney(TRANSFER_6_NEGATIVE_AMOUNT.getUserFrom(), TRANSFER_6_NEGATIVE_AMOUNT.getUserTo(), TRANSFER_6_NEGATIVE_AMOUNT.getAmount());
     }
 
     @Test(expected = IllegalTransferException.class)
-    public void sendMoney_To_Self() throws IllegalTransferException {
+    public void sendMoney_To_Self() throws InsufficientFundsException {
         // Arrange
         Transfer testTransfer = new Transfer(3002, 2, 2, 1003, 1003, BigDecimal.valueOf(46.00));
 //        boolean expected = false;
@@ -81,18 +81,18 @@ public class JdbcTransferDaoTests extends BaseDaoTests {
 //        Assert.assertEquals(expected, actual);
     }
 
-//    @Test
-//    public void get_Transfer_Details_By_Id_Happy_Path() {
-//        // Arrange
-//        String expected = "Transfer ID: " + 3001 +
-//                " | Transfer Type ID: " + 2 +
-//                " | Transfer From: " + 2003 +
-//                " | Transfer To: " + 2004 +
-//                " | Amount: " + 1000.00 +
-//                " | Transfer Status: " + 2;
-//        // Act
-//        Transfer actual = sut.getTransferDetails(3001, 2001);
-//        // Assert
-//        Assert.assertEquals(expected, actual);
-//    }
+    @Test
+    public void get_Transfer_Details_By_Id_Happy_Path() {
+        // Arrange
+        String expected = "Transfer ID: " + 3001 +
+                " | Transfer Type ID: " + 2 +
+                " | Transfer From: " + 2003 +
+                " | Transfer To: " + 2004 +
+                " | Amount: " + 1000.00 +
+                " | Transfer Status: " + 2;
+        // Act
+        Transfer actual = sut.getTransferDetails(3001, 2001);
+        // Assert
+        Assert.assertEquals(expected, actual);
+    }
 }

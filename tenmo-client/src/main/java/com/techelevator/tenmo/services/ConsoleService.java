@@ -134,7 +134,7 @@ public class ConsoleService {
             System.out.print("\t" + transfer.getTransferId() + "\t\t");
             System.out.print(transfer.getTransferStatusId() + "\t\t");
             System.out.print("From: " + transfer.getUserFrom());
-            System.out.print(" To: " + transfer.getUserTo());
+            System.out.print(" To: " + transfer.getUserTo()); // TODO fix print out of acct info // Get user name?
             System.out.print("     $" + transfer.getAmount() + "\n");
         }
     }

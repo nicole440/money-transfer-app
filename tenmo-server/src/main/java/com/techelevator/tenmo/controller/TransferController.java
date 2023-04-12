@@ -4,6 +4,7 @@ import com.techelevator.tenmo.dao.AccountDao;
 import com.techelevator.tenmo.dao.TransferDao;
 import com.techelevator.tenmo.dao.UserDao;
 import com.techelevator.tenmo.exceptions.IllegalTransferException;
+import com.techelevator.tenmo.exceptions.InsufficientFundsException;
 import com.techelevator.tenmo.model.Transfer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -44,13 +45,15 @@ public class TransferController {
     }
 
     @RequestMapping(path = "/history/{transferId}", method = RequestMethod.GET)
-    public Transfer getTransferDetailsById(@PathVariable int transferId, int userId) {
-        return transferDao.getTransferDetails(transferId, userId);
+    public Transfer getTransferDetailsById(@PathVariable int transferId, Principal principal) {
+        int currentUserID = userDao.findIdByUsername(principal.getName());
+        Transfer singleTransaction = transferDao.getTransferDetails(transferId, currentUserID);
+        return singleTransaction;
     }
 
     @ResponseStatus(HttpStatus.CREATED)
     @RequestMapping(path = "/send", method = RequestMethod.POST)
-    public boolean sendMoney(@RequestBody Transfer transfer, Principal principal) throws IllegalTransferException {
+    public boolean sendMoney(@RequestBody Transfer transfer, Principal principal) throws IllegalTransferException, InsufficientFundsException {
         int userId = transferDao.getUserId(principal.getName());
         boolean moneySent = transferDao.sendMoney(userId, transfer.getUserTo(), transfer.getAmount());
         if (moneySent == false) {
@@ -62,16 +65,14 @@ public class TransferController {
     @ResponseStatus(HttpStatus.CREATED)
     @RequestMapping(path = "/request", method = RequestMethod.POST)
     public boolean requestMoney(@RequestBody Transfer transfer, Principal principal) {
-        boolean transferRequested = false;
         int userId = transferDao.getUserId(principal.getName());
         BigDecimal amount = transfer.getAmount();
         try {
             transferDao.requestMoney(userId, transfer.getUserFrom(), amount);
-            transferRequested = true;
         } catch (ResponseStatusException e) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid transfer."); // TODO make response more descriptive
         }
-        return transferRequested;
+        return true;
     }
 
     // TODO add functionality to approve or reject transaction request

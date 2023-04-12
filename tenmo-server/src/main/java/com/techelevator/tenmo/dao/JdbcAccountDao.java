@@ -13,10 +13,9 @@ public class JdbcAccountDao implements AccountDao {
         this.jdbcTemplate = jdbcTemplate;
     }
 
-    // SQL tested via pgAdmin query: SUCCESS
     @Override
     public BigDecimal getBalanceByUser(String user) throws IllegalArgumentException {
-        BigDecimal balance = BigDecimal.valueOf(0.00);
+        BigDecimal balance;
         String sql = "SELECT balance FROM account " +
                 "JOIN tenmo_user ON account.user_id = tenmo_user.user_id " +
                 "WHERE username = ?;";

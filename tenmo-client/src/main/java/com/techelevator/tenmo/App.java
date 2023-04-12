@@ -96,6 +96,7 @@ public class App {
     }
 
     private void viewTransferHistory() {
+ //     int userId = currentUser.getUser().getId();
         Transfer[] transferArray = transferService.getTransferHistory();
         consoleService.printTransferHistory(transferArray);
         int transferId = consoleService.selectTransfer(transferArray);
@@ -115,6 +116,9 @@ public class App {
         Transfer transfer = new Transfer(recipient, transferAmount);
         transfer.setUserTo(recipient);
         transfer.setAmount(transferAmount);
+        if (transferAmount.compareTo(BigDecimal.ZERO) <= 0) {
+            consoleService.printErrorMessage(); // TODO make a new message that's more descriptive
+        }
         transfer.setUserFrom(currentUser.getUser().getId());
         if (isValidRecipient(transfer) && senderHasSufficientFunds(transfer)) {
             transferService.sendMoney(transfer);
