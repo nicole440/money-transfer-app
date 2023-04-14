@@ -18,5 +18,4 @@ public interface TransferDao {
 
     int getUserId(String userName);
 
-
 }

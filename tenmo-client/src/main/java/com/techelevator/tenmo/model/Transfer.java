@@ -13,31 +13,21 @@ public class Transfer {
     public Transfer() {
     }
 
-    public Transfer(int recipient, BigDecimal transferAmount) {
+    public Transfer(int userTo, BigDecimal amount) {
+        this.userTo = userTo;
+        this.amount = amount;
     }
 
     public int getTransferId() {
         return transferId;
     }
 
-    public void setTransferId(int transferId) {
-        this.transferId = transferId;
-    }
-
     public int getTransferTypeId() {
         return transferTypeId;
     }
 
-    public void setTransferTypeId(int transferTypeId) {
-        this.transferTypeId = transferTypeId;
-    }
-
     public int getTransferStatusId() {
         return transferStatusId;
-    }
-
-    public void setTransferStatusId(int transferStatusId) {
-        this.transferStatusId = transferStatusId;
     }
 
     public int getUserFrom() {

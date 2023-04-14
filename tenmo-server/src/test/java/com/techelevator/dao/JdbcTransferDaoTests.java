@@ -14,6 +14,9 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import java.math.BigDecimal;
 import java.util.List;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertThrows;
+
 public class JdbcTransferDaoTests extends BaseDaoTests {
     protected static final User USER_1 = new User(1001, "user1", "user1", "USER");
     protected static final User USER_2 = new User(1002, "user2", "user2", "USER");
@@ -30,7 +33,7 @@ public class JdbcTransferDaoTests extends BaseDaoTests {
     protected static final Transfer TRANSFER_4 = new Transfer(3004, 2, 2, 1001, 1003, BigDecimal.valueOf(50.00));
 
     protected static final Transfer TRANSFER_5_ZERO_BALANCE = new Transfer(3005, 2, 2, 1004, 1003, BigDecimal.valueOf(20.00));
-    protected static final Transfer TRANSFER_6_NEGATIVE_AMOUNT = new Transfer(3006, 2, 2, 1001, 1003, BigDecimal.valueOf(-45.00));
+    protected static final Transfer TRANSFER_6_NEGATIVE_AMOUNT = new Transfer(3006, 2, 2, 1003, 1004, BigDecimal.valueOf(-45.00));
 
     private JdbcTransferDao sut;
 
@@ -44,41 +47,39 @@ public class JdbcTransferDaoTests extends BaseDaoTests {
     public void listTransfersByUser_lists_all_transfers_for_user() {
         List<Transfer> testTransferList = sut.listTransfersByUser(1001);
         Assert.assertNotNull(testTransferList);
-        int expected = 2;
+        int expected = 3;
         int actual = testTransferList.size();
-        Assert.assertEquals(expected, actual);
+        assertEquals(expected, actual);
     }
 
     @Test
-    public void sendMoney_Happy_Path() throws InsufficientFundsException {
+    public void sendMoney_Happy_Path() throws IllegalTransferException {
         // Arrange
         boolean expected = true;
         // Act
         boolean actual = sut.sendMoney(TRANSFER_1.getUserFrom(), TRANSFER_1.getUserTo(), TRANSFER_1.getAmount());
         // Assert
-        Assert.assertEquals(expected, actual);
+        assertEquals(expected, actual);
     }
 
-    @Test(expected = InsufficientFundsException.class)
-    public void sendMoney_Returns_False_If_Sender_Has_Zero_Balance() throws InsufficientFundsException {
+    @Test(expected = IllegalTransferException.class)
+    public void sendMoney_Returns_False_If_Sender_Has_Zero_Balance() throws IllegalTransferException {
         boolean actual = sut.sendMoney(TRANSFER_5_ZERO_BALANCE.getUserFrom(), TRANSFER_5_ZERO_BALANCE.getUserTo(), TRANSFER_5_ZERO_BALANCE.getAmount());
         Assert.assertFalse(actual);
     }
 
     @Test(expected = IllegalTransferException.class)
-    public void sendMoney_Negative_Transfer() throws IllegalTransferException, InsufficientFundsException {
+    public void sendMoney_Negative_Transfer() throws IllegalTransferException {
         sut.sendMoney(TRANSFER_6_NEGATIVE_AMOUNT.getUserFrom(), TRANSFER_6_NEGATIVE_AMOUNT.getUserTo(), TRANSFER_6_NEGATIVE_AMOUNT.getAmount());
     }
 
-    @Test(expected = IllegalTransferException.class)
-    public void sendMoney_To_Self() throws InsufficientFundsException {
+    @Test
+    public void sendMoney_To_Self() throws IllegalTransferException {
         // Arrange
-        Transfer testTransfer = new Transfer(3002, 2, 2, 1003, 1003, BigDecimal.valueOf(46.00));
-//        boolean expected = false;
-        // Act
-        boolean actual = sut.sendMoney(testTransfer.getUserFrom(), testTransfer.getUserTo(), testTransfer.getAmount());
-        // Assert
-//        Assert.assertEquals(expected, actual);
+        boolean expected = false;
+        // Act & Assert
+        boolean actual = sut.sendMoney(1003, 1003, BigDecimal.valueOf(45.00));
+        assertEquals(expected, actual);
     }
 
     @Test
@@ -93,6 +94,6 @@ public class JdbcTransferDaoTests extends BaseDaoTests {
         // Act
         Transfer actual = sut.getTransferDetails(3001, 2001);
         // Assert
-        Assert.assertEquals(expected, actual);
+        assertEquals(expected, actual);
     }
 }

@@ -1,5 +1,6 @@
 package com.techelevator.tenmo.dao;
 
+import com.techelevator.tenmo.exceptions.IllegalTransferException;
 import com.techelevator.tenmo.exceptions.InsufficientFundsException;
 import com.techelevator.tenmo.model.Transfer;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -54,7 +55,7 @@ public class JdbcTransferDao implements TransferDao {
     }
 
     @Override
-    public boolean sendMoney(int senderId, int recipientId, BigDecimal amount) throws InsufficientFundsException {
+    public boolean sendMoney(int senderId, int recipientId, BigDecimal amount) throws IllegalTransferException {
         String sql = "START TRANSACTION; " +
                 "UPDATE account SET balance = balance - ? " +
                 "WHERE user_id = ?; " +
@@ -68,7 +69,7 @@ public class JdbcTransferDao implements TransferDao {
         } catch (DataIntegrityViolationException e) {
             sql = "ROLLBACK;";
             jdbcTemplate.update(sql);
-            throw new InsufficientFundsException();
+            throw new IllegalTransferException();
         }
         return true;
     }
@@ -89,8 +90,7 @@ public class JdbcTransferDao implements TransferDao {
         return userId;
     }
 
-    /* Checks whether the accountId parameter matches the account_id value associated with
-    the given userId in a database table named 'account'. */
+    /* Used to check whether the current user's ID matches the account ID on the transfer */
     private boolean accountIdMatchesUserId(int accountId, int userId) {
         String sql = "SELECT account_id FROM account WHERE user_id = ?;";
         int returnedAccountId = jdbcTemplate.queryForObject(sql, Integer.class, userId);

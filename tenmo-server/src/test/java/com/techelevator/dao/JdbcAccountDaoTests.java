@@ -7,13 +7,11 @@ import org.junit.Before;
 import org.junit.Test;
 import org.springframework.jdbc.core.JdbcTemplate;
 import java.math.BigDecimal;
+import java.security.Principal;
 
 import static org.junit.Assert.assertEquals;
 
 public class JdbcAccountDaoTests extends BaseDaoTests {
-
-    protected static final Account ACCOUNT_1 = new Account(2001, BigDecimal.valueOf(1000.00), 1001);
-    protected static final Account ACCOUNT_2 = new Account(2002, BigDecimal.valueOf(0.00), 1002);
 
     private JdbcAccountDao sut;
 
@@ -25,11 +23,11 @@ public class JdbcAccountDaoTests extends BaseDaoTests {
 
     @Test
     public void getBalanceByUser_returnsExpectedBalance() {
-        Account testAccount = new Account(2001, BigDecimal.valueOf(1000.00), 1001);
         User testUser = new User(1001, "user1", "user1", "USER");
-        String validUser = testUser.getUsername();
-        BigDecimal expectedBalance = BigDecimal.valueOf(1000.00);
-        BigDecimal actualBalance = sut.getBalanceByUser(validUser);
+        Account testAccount = new Account(2001, BigDecimal.valueOf(1000.00), 1001);
+        Principal mockPrincipal = new MockPrincipal(testUser.getUsername());
+        BigDecimal expectedBalance = new BigDecimal("1000.00");
+        BigDecimal actualBalance = sut.getBalanceByUser(mockPrincipal.getName());
         assertEquals(expectedBalance, actualBalance);
     }
 }

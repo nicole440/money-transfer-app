@@ -150,7 +150,6 @@ public class ConsoleService {
         return -1;
     }
 
-    // TODO fix null pointer
     public void printSingleTransfer(Transfer transfer) {
         System.out.println("TRANSFER DETAILS\nTransfer ID: " + transfer.getTransferId() + "\nAmount : $" + transfer.getAmount() + "\nFrom: " + transfer.getUserFrom() + "\nTo: " + transfer.getUserTo() + "\nStatus: " + transfer.getTransferStatusId() + "\nType: " + transfer.getTransferTypeId());
     }
